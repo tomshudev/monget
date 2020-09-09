@@ -1,0 +1,15 @@
+.definer {
+  height: 100%;
+  width: 100%;
+  padding: 3rem;
+  display: grid;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  grid-template-rows: 10rem auto 40rem;
+  overflow-y: auto;
+
+  .categories {
+    margin: 2rem 0;
+  }
+}

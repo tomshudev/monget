@@ -1,0 +1,32 @@
+.categories-container {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 3rem;
+}
+
+.category {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 12rem;
+  height: 11rem;
+  background-color: #b1b1b1;
+  border-radius: 1rem;
+  box-shadow: 0 0 6px 0px rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+  transition: all 0.2s ease-in;
+
+  .icon {
+    color: #000;
+    margin-bottom: 1rem;
+  }
+
+  &.selected,
+  &:hover {
+    background-color: #616161;
+  }
+}
