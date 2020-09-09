@@ -6,5 +6,5 @@ We will help you to understand how you spent your money using graphs and complex
 
 ## Features
 
-[ ] Design the basics of the application
-[ ] sdf
+- [ ] Design the basics of the application
+- [ ] Authentication using Google and Firebase
