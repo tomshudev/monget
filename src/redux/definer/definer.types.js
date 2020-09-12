@@ -1,0 +1,4 @@
+export const DefinerAcitonTypes = {
+  SELECT_CATEGORY: "SELECT_CATEGORY",
+  SET_CATEGORIES: "SET_CATEGORIES",
+};

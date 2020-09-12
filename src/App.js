@@ -1,48 +1,69 @@
+import "antd/dist/antd.css";
 import React from "react";
+import { connect } from "react-redux";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import "./App.css";
-import Home from "./pages/home/home.component";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { auth, createUserProfileDocument } from "./firebase/firebase.utils";
 import Definer from "./pages/definer/definer.component";
+import Home from "./pages/home/home.component";
+import { setCurrentUser } from "./redux/user/user.actions";
 import Header from "./shared/header/header.component";
-import { useDataLayerValue } from "./DataLayer";
 import Sidebar from "./shared/sidebar/sidebar.component";
 
-import "antd/dist/antd.css";
+class App extends React.Component {
+  toggleSidebar(isOpen) {
+    this.setState({ ...this.state, isSidebarOpen: isOpen });
+  }
 
-function App() {
-  const [{ isSidebarOpen }, dispatch] = useDataLayerValue();
+  closeSidebar() {
+    this.setState({ ...this.state, isSidebarOpen: false });
+  }
 
-  function toggleSidebar(isOpen) {
-    console.log("here", isOpen);
-    dispatch({
-      type: "TOGGLE_SIDEBAR",
-      isOpen: !isSidebarOpen,
+  unsubscribeFromAuth;
+
+  componentDidMount() {
+    const { setCurrentUser } = this.props;
+
+    this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
+      if (userAuth) {
+        const userRef = await createUserProfileDocument(userAuth);
+
+        userRef.onSnapshot((snapshot) => {
+          setCurrentUser({
+            id: snapshot.id,
+            ...snapshot.data(),
+          });
+        });
+      }
+      setCurrentUser(userAuth);
     });
   }
 
-  function closeSidebar() {
-    dispatch({
-      type: "TOGGLE_SIDEBAR",
-      isOpen: false,
-    });
+  componentWillUnmount() {
+    this.unsubscribeFromAuth();
   }
 
-  return (
-    <div className="App">
-      <Router>
-        <Header toggleSidebar={toggleSidebar} />
-        <Sidebar isOpen={isSidebarOpen} toggleSidebar={closeSidebar} />
-        <Switch>
-          <Route path="/definer">
-            <Definer />
-          </Route>
-          <Route path="/">
-            <Home />
-          </Route>
-        </Switch>
-      </Router>
-    </div>
-  );
+  render() {
+    return (
+      <div className="App">
+        <Router>
+          <Header />
+          <Sidebar />
+          <Switch>
+            <Route path="/definer">
+              <Definer />
+            </Route>
+            <Route path="/">
+              <Home />
+            </Route>
+          </Switch>
+        </Router>
+      </div>
+    );
+  }
 }
 
-export default App;
+const mapDispatchToProps = (dispatch) => ({
+  setCurrentUser: (user) => dispatch(setCurrentUser(user)),
+});
+export default connect(null, mapDispatchToProps)(App);

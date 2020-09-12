@@ -3,6 +3,8 @@ import "./sidebar.styles.scss";
 
 import OutsideAlerter from "../outside-alerter/outside-alerter.component";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import { toggleSidebar } from "../../redux/layout/layout.actions";
 
 function Sidebar({ isOpen, toggleSidebar }) {
   return (
@@ -34,4 +36,12 @@ function Sidebar({ isOpen, toggleSidebar }) {
   );
 }
 
-export default Sidebar;
+const mapStateToProps = (state) => ({
+  isOpen: state.layout.isSidebarOpen,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  toggleSidebar: (isOpen) => dispatch(toggleSidebar(isOpen)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Sidebar);
