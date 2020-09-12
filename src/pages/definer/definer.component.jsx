@@ -3,9 +3,14 @@ import { connect } from "react-redux";
 import { selectCategory } from "../../redux/definer/definer.actions";
 import Categories from "./components/categories/categories.component";
 import SetExpense from "./components/set-expense/set-expense.component";
+import { setMonthlyExpenses } from "./services/definer.servics";
 import "./definer.styles.scss";
 
-function Definer({ categories, selectedCategory, selectCategory }) {
+function Definer({ user, categories, selectedCategory, selectCategory }) {
+  const setMonthltyExpensesValue = (value) => {
+    setMonthlyExpenses(user, selectedCategory, value);
+  };
+
   return (
     <div className="definer">
       <h1>Define yout desires monthly expenses</h1>
@@ -20,9 +25,8 @@ function Definer({ categories, selectedCategory, selectCategory }) {
         <SetExpense
           categotyName={selectedCategory.name}
           icon={selectedCategory.icon}
-          currentValue={
-            Math.random() < 0.85 ? Math.floor(Math.random() * 2000) : undefined
-          }
+          currentValue={selectedCategory.value ?? 0}
+          setMonthlyExpenses={setMonthltyExpensesValue}
         />
       ) : null}
     </div>
@@ -32,6 +36,7 @@ function Definer({ categories, selectedCategory, selectCategory }) {
 const mapStateToProps = (state) => ({
   categories: state.definer.categories,
   selectedCategory: state.definer.selectedCategory,
+  user: state.user.currentUser,
 });
 
 const mapDispatchToProps = (dispatch) => ({
