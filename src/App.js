@@ -9,6 +9,8 @@ import Home from "./pages/home/home.component";
 import { setCurrentUser } from "./redux/user/user.actions";
 import Header from "./shared/header/header.component";
 import Sidebar from "./shared/sidebar/sidebar.component";
+import { setCategories } from "./redux/definer/definer.actions";
+import { createCategories } from "./pages/definer/services/definer.servics";
 
 class App extends React.Component {
   toggleSidebar(isOpen) {
@@ -22,20 +24,29 @@ class App extends React.Component {
   unsubscribeFromAuth;
 
   componentDidMount() {
-    const { setCurrentUser } = this.props;
+    const { setCurrentUser, setCategories } = this.props;
 
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
       if (userAuth) {
         const userRef = await createUserProfileDocument(userAuth);
 
         userRef.onSnapshot((snapshot) => {
+          let userData = snapshot.data();
+
           setCurrentUser({
             id: snapshot.id,
-            ...snapshot.data(),
+            displayName: userData.displayName,
+            email: userData.email,
+            photoURL: userData.photoURL,
+            createdAt: userData.createdAt,
+            categories: userData.categories,
           });
+
+          setCategories(createCategories(userData.categories ?? []));
         });
+      } else {
+        setCurrentUser(userAuth);
       }
-      setCurrentUser(userAuth);
     });
   }
 
@@ -65,5 +76,6 @@ class App extends React.Component {
 
 const mapDispatchToProps = (dispatch) => ({
   setCurrentUser: (user) => dispatch(setCurrentUser(user)),
+  setCategories: (categories) => dispatch(setCategories(categories)),
 });
 export default connect(null, mapDispatchToProps)(App);

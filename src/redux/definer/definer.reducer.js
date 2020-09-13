@@ -1,37 +1,8 @@
-import { IconsEnum, IconsNames } from "../../enums/icons.enum";
-
 const { DefinerAcitonTypes } = require("./definer.types");
-
-const CATEGORIES = [
-  {
-    name: "Restaurants",
-    icon: IconsNames.CAKE,
-  },
-  {
-    name: "Groceries",
-    icon: IconsNames.CART,
-  },
-  {
-    name: "Shopping",
-    icon: IconsNames.SHOPPING_BAG,
-  },
-  {
-    name: "Luxury",
-    icon: IconsNames.LUXURY,
-  },
-  {
-    name: "Regular Expenses",
-    icon: IconsNames.REGULAR,
-  },
-];
 
 const initialState = {
   selectedCategory: null,
-  categories: [...Array(CATEGORIES.length).keys()].map((val) => ({
-    id: val,
-    name: CATEGORIES[val].name,
-    icon: IconsEnum[CATEGORIES[val].icon],
-  })),
+  categories: [],
 };
 
 const definerReducer = (state = initialState, action) => {
@@ -47,6 +18,20 @@ const definerReducer = (state = initialState, action) => {
         ...state,
         categories: action.payload,
       };
+    case DefinerAcitonTypes.UPDATE_CATEGORY_VALUE: {
+      const newCategories = [...state.categories];
+      newCategories.find((cat) => cat.id === action.payload.categoryID).value =
+        action.payload.value;
+
+      return {
+        ...state,
+        categories: newCategories,
+        selectedCategory: {
+          ...state.selectedCategory,
+          value: action.payload.value,
+        },
+      };
+    }
 
     default:
       return state;
