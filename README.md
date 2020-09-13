@@ -7,9 +7,9 @@ We will help you to understand how you spent your money using graphs and complex
 ## Roadmap
 
 - [x] Design the basics of the application
-- [ ] Authentication using Google and Firebase
-- [ ] Create DB in Firebase to store the users and data
-- [ ] Create the option to set the wanted monthly expense in each category
+- [x] Authentication using Google and Firebase
+- [x] Create DB in Firebase to store the users and data
+- [x] Create the option to set the wanted monthly expense in each category
 - [ ] Add new expense to a specific category (Add option for description and location)
 - [ ] Display all the expenses divided by category
 - [ ] Display a pie chart for each category that visualize how much money the user spent
