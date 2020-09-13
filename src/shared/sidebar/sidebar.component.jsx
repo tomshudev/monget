@@ -12,7 +12,9 @@ function Sidebar({ isOpen, toggleSidebar }) {
       id="sidebar-container"
       className={`container ${!isOpen ? "closed" : ""}`}
     >
-      <OutsideAlerter handle={() => toggleSidebar(false)}>
+      <OutsideAlerter
+        handle={() => (isOpen ? toggleSidebar(false) : undefined)}
+      >
         <div
           className={`sidebar ${
             isOpen ? "sidebar__opened" : "sidebar__closed"

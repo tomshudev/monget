@@ -9,3 +9,8 @@ export const setCategories = (categories) => ({
   type: DefinerAcitonTypes.SET_CATEGORIES,
   payload: categories,
 });
+
+export const updateCategoryValue = (categoryID, value) => ({
+  type: DefinerAcitonTypes.UPDATE_CATEGORY_VALUE,
+  payload: { categoryID, value },
+});
